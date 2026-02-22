@@ -18,21 +18,13 @@ def parse_log(line):
 
 
 def main():
-    counts = {
-        "INFO": 0,
-        "WARNING": 0,
-        "ERROR": 0
-    }
+    counts = {}
     for i in logs:
         result = parse_log(i)
-        if result["Level"] == "INFO":
-            counts["INFO"] += 1
-        elif result["Level"] == "WARNING":
-            counts["WARNING"] += 1
-        elif result["Level"] == "ERROR":
-            counts["ERROR"] += 1
+        counts[result["Level"]] = counts.get(result["Level"], 0) + 1
         print(f"{result["Date"]}, {result["Time"]}, {result["Level"]}, {result["Message"]}")
-    print(f"INFO: {counts['INFO']}, WARNING: {counts['WARNING']}, ERROR: {counts['ERROR']}")
+    for key, value in counts.items():
+        print(f"{key}: {value}")
 
 
 
