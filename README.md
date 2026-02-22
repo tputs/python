@@ -1,3 +1,2 @@
 # python
-# python
-# python
+A collection of python practice scripts.
