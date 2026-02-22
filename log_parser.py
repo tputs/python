@@ -27,6 +27,7 @@ def get_log_files(directory):
         logs.append(f)
     return logs
 
+
 def read_logs(filename):
     """File open handler to read given log files
     
