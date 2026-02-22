@@ -1,3 +1,4 @@
+# a script to parse log files from a given date range
 from datetime import datetime
 
 
