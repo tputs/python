@@ -16,16 +16,29 @@ def parse_log(line):
     return log_line
 
 
-
-def main():
+def count_levels(logs):
     counts = {}
     for i in logs:
         result = parse_log(i)
         counts[result["Level"]] = counts.get(result["Level"], 0) + 1
-        print(f"{result["Date"]}, {result["Time"]}, {result["Level"]}, {result["Message"]}")
+    return counts
+
+
+def print_summary(counts):
     for key, value in counts.items():
         print(f"{key}: {value}")
 
+
+def print_log(result):
+    print(f"{result["Date"]}, {result["Time"]}, {result["Level"]}, {result["Message"]}")
+
+
+def main():
+    counts = count_levels(logs)
+    for i in logs:
+        result = parse_log(i)
+        print_log(result)
+    print_summary(counts)
 
 
 if __name__ == "__main__":
