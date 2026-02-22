@@ -1,8 +1,7 @@
-logs = [
-    "2024-01-15 08:23:11 ERROR Failed to connect to database",
-    "2024-01-15 08:23:45 INFO Service started successfully",
-    "2024-01-15 08:24:02 WARNING High memory usage detected"
-]
+def read_logs(filename):
+    with open(filename, 'r') as file:
+        content = file.readlines()
+        return content
 
 
 def parse_log(line):
@@ -34,6 +33,8 @@ def print_log(result):
 
 
 def main():
+    filename = input('Type a filename/path: ')
+    logs = read_logs(filename)
     counts = count_levels(logs)
     for i in logs:
         result = parse_log(i)
