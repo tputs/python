@@ -23,6 +23,15 @@ def count_levels(logs):
     return counts
 
 
+def count_errors(logs):
+    errors = {}
+    for i in logs:
+        result = parse_log(i)
+        if result["Level"] == "ERROR":
+            errors[result["Message"]] = errors.get(result["Message"], 0) + 1
+    return errors
+
+
 def print_summary(counts):
     for key, value in counts.items():
         print(f"{key}: {value}")
@@ -40,6 +49,7 @@ def main():
         result = parse_log(i)
         print_log(result)
     print_summary(counts)
+    print_summary(count_errors(logs))
 
 
 if __name__ == "__main__":
