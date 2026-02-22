@@ -4,6 +4,7 @@ Reads .log files, filters by time range, and summarizes log levels and unique er
 """
 from datetime import datetime
 from pathlib import Path
+import argparse
 
 
 
@@ -63,12 +64,17 @@ def print_summary(counts):
 
 
 def main():
-    files = get_log_files(input('Type path to log dir: '))
+    parser = argparse.ArgumentParser(description="Log parser utility")
+    parser.add_argument("directory")
+    parser.add_argument("--start", required=True)
+    parser.add_argument("--end", required=True)
+    args = parser.parse_args()
+    files = get_log_files(args.directory)
     all_logs = []
     for file in files:
         all_logs.extend(read_logs(file))
-    start = datetime.strptime(input('Type the start time: '), "%Y-%m-%d %H:%M:%S")
-    end = datetime.strptime(input('Type the end time: '), "%Y-%m-%d %H:%M:%S")
+    start = datetime.strptime(args.start, "%Y-%m-%d %H:%M:%S")
+    end = datetime.strptime(args.end, "%Y-%m-%d %H:%M:%S")
     filteredlog = filter_by_time(all_logs, start, end)
     counts = count_levels(filteredlog)
     print("--- Log Level Counts ---")
