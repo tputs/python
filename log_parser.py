@@ -5,16 +5,19 @@ Reads .log files, filters by time range, and summarizes log levels and unique er
 from datetime import datetime
 from pathlib import Path
 import argparse
+import sys
 
 
 
 def get_log_files(directory):
     p = Path(directory)
+    if not p.exists():
+        print(f"Error: Directory '{directory}' not found.")
+        return []
     logs = []
     for f in p.glob("*.log"):
         logs.append(f)
     return logs
-
 
 def read_logs(filename):
     with open(filename, 'r') as file:
@@ -26,25 +29,33 @@ def filter_by_time(all_logs, start, end):
     filtered = []
     for i in all_logs:
         result = parse_log(i)
+        if result is None:
+            continue
         if result["Timestamp"] >= start and result["Timestamp"] <= end:
             filtered.append(i)
     return filtered
 
 
 def parse_log(line):
-    parts = line.split()
-    log_line = {
-        "Timestamp": datetime.strptime(f"{parts[0]} {parts[1]}", "%Y-%m-%d %H:%M:%S"),
-        "Level": parts[2],
-        "Message": " ".join(parts[3:])
-    }
-    return log_line
+    try:
+        parts = line.split()
+        log_line = {
+            "Timestamp": datetime.strptime(f"{parts[0]} {parts[1]}", "%Y-%m-%d %H:%M:%S"),
+            "Level": parts[2],
+            "Message": " ".join(parts[3:])
+        }
+        return log_line
+    except (ValueError, IndexError):
+        print(f"Warning: Could not parse line: {line.strip()}")
+        return None
 
 
 def count_levels(logs):
     counts = {}
     for i in logs:
         result = parse_log(i)
+        if result is None:
+            continue
         counts[result["Level"]] = counts.get(result["Level"], 0) + 1
     return counts
 
@@ -53,6 +64,8 @@ def count_errors(logs):
     errors = {}
     for i in logs:
         result = parse_log(i)
+        if result is None:
+            continue
         if result["Level"] == "ERROR":
             errors[result["Message"]] = errors.get(result["Message"], 0) + 1
     return errors
@@ -73,8 +86,16 @@ def main():
     all_logs = []
     for file in files:
         all_logs.extend(read_logs(file))
-    start = datetime.strptime(args.start, "%Y-%m-%d %H:%M:%S")
-    end = datetime.strptime(args.end, "%Y-%m-%d %H:%M:%S")
+    try:
+        start = datetime.strptime(args.start, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        print(f"Error: {args.start} is an invalid date format. Use YYYY-MM-DD HH:MM:SS")
+        sys.exit()
+    try:
+        end = datetime.strptime(args.end, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        print(f"Error: {args.end} is an invalid date format. Use YYYY-MM-DD HH:MM:SS")
+        sys.exit()
     filteredlog = filter_by_time(all_logs, start, end)
     counts = count_levels(filteredlog)
     print("--- Log Level Counts ---")
