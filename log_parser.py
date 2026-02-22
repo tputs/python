@@ -37,18 +37,13 @@ def print_summary(counts):
         print(f"{key}: {value}")
 
 
-def print_log(result):
-    print(f"{result["Date"]}, {result["Time"]}, {result["Level"]}, {result["Message"]}")
-
-
 def main():
     filename = input('Type a filename/path: ')
     logs = read_logs(filename)
     counts = count_levels(logs)
-    for i in logs:
-        result = parse_log(i)
-        print_log(result)
+    print("--- Log Level Counts ---")
     print_summary(counts)
+    print("--- Unique Errors ---")
     print_summary(count_errors(logs))
 
 
