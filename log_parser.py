@@ -27,16 +27,16 @@ def read_logs(filename):
 
 def filter_by_time(all_logs, start, end):
     filtered = []
-    for i in all_logs:
-        result = parse_log(i)
+    for filename, line in all_logs:
+        result = parse_log(line, filename)
         if result is None:
             continue
         if result["Timestamp"] >= start and result["Timestamp"] <= end:
-            filtered.append(i)
+            filtered.append((filename, line))
     return filtered
 
 
-def parse_log(line):
+def parse_log(line, filename=None):
     try:
         parts = line.split()
         log_line = {
@@ -46,14 +46,14 @@ def parse_log(line):
         }
         return log_line
     except (ValueError, IndexError):
-        print(f"Warning: Could not parse line: {line.strip()}")
+        print(f"Warning: Could not parse line in {filename}: {line.strip()}")
         return None
 
 
 def count_levels(logs):
     counts = {}
-    for i in logs:
-        result = parse_log(i)
+    for filename, line in logs:
+        result = parse_log(line, filename)
         if result is None:
             continue
         counts[result["Level"]] = counts.get(result["Level"], 0) + 1
@@ -62,8 +62,8 @@ def count_levels(logs):
 
 def count_errors(logs):
     errors = {}
-    for i in logs:
-        result = parse_log(i)
+    for filename, line in logs:
+        result = parse_log(line, filename)
         if result is None:
             continue
         if result["Level"] == "ERROR":
@@ -85,7 +85,8 @@ def main():
     files = get_log_files(args.directory)
     all_logs = []
     for file in files:
-        all_logs.extend(read_logs(file))
+        for line in read_logs(file):
+            all_logs.append((file, line))
     try:
         start = datetime.strptime(args.start, "%Y-%m-%d %H:%M:%S")
     except ValueError:
