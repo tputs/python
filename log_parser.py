@@ -1,6 +1,18 @@
-# a script to parse log files from a given date range
+"""
+Log parser utility.
+Reads .log files, filters by time range, and summarizes log levels and unique errors.
+"""
 from datetime import datetime
+from pathlib import Path
 
+
+
+def get_log_files(directory):
+    p = Path(directory)
+    logs = []
+    for f in p.glob("*.log"):
+        logs.append(f)
+    return logs
 
 
 def read_logs(filename):
@@ -9,9 +21,9 @@ def read_logs(filename):
         return content
 
 
-def filter_by_time(logs, start, end):
+def filter_by_time(all_logs, start, end):
     filtered = []
-    for i in logs:
+    for i in all_logs:
         result = parse_log(i)
         if result["Timestamp"] >= start and result["Timestamp"] <= end:
             filtered.append(i)
@@ -51,11 +63,13 @@ def print_summary(counts):
 
 
 def main():
-    filename = input('Type a filename/path: ')
-    logs = read_logs(filename)
+    files = get_log_files(input('Type path to log dir: '))
+    all_logs = []
+    for file in files:
+        all_logs.extend(read_logs(file))
     start = datetime.strptime(input('Type the start time: '), "%Y-%m-%d %H:%M:%S")
     end = datetime.strptime(input('Type the end time: '), "%Y-%m-%d %H:%M:%S")
-    filteredlog = filter_by_time(logs, start, end)
+    filteredlog = filter_by_time(all_logs, start, end)
     counts = count_levels(filteredlog)
     print("--- Log Level Counts ---")
     print_summary(counts)
