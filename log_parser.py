@@ -10,6 +10,14 @@ import sys
 
 
 def get_log_files(directory):
+    """Creates a list of log files from the given directory.
+    
+    Args:
+        directory: A directory path provided from argparse.
+    
+    Returns:
+        A globbed list of log files.
+    """
     p = Path(directory)
     if not p.exists():
         print(f"Error: Directory '{directory}' not found.")
@@ -20,12 +28,30 @@ def get_log_files(directory):
     return logs
 
 def read_logs(filename):
+    """File open handler to read given log files
+    
+    Args:
+        filename: Filenames of log files from given log directory
+    
+    Returns:
+        A list of log lines from the given log files
+    """
     with open(filename, 'r') as file:
         content = file.readlines()
         return content
 
 
 def filter_by_time(all_logs, start, end):
+    """Filters all logs down to given start and end date.
+    
+    Args:
+        all_logs: All log files found in the given directory.
+        start: Start timestamp.
+        end: End timestamp.
+        
+    Returns:
+        A list of (filename, line) tuples within the given time range.
+    """
     filtered = []
     for filename, line in all_logs:
         result = parse_log(line, filename)
@@ -37,6 +63,15 @@ def filter_by_time(all_logs, start, end):
 
 
 def parse_log(line, filename=None):
+    """Parse a single log line into its component parts.
+    
+    Args:
+        line: A string containing a log line.
+        filename: Optional path to the source file, used in warnings.
+    
+    Returns:
+        A dict with Timestamp, Level, and Message keys, or None if parsing fails.
+    """
     try:
         parts = line.split()
         log_line = {
@@ -51,6 +86,14 @@ def parse_log(line, filename=None):
 
 
 def count_levels(logs):
+    """Dynamic counts of various log levels
+    
+    Args:
+        logs: A list of logs from get_log_files
+        
+    Returns:
+        A dict of counts of the various log levels found
+    """
     counts = {}
     for filename, line in logs:
         result = parse_log(line, filename)
@@ -61,6 +104,14 @@ def count_levels(logs):
 
 
 def count_errors(logs):
+    """Dynamic counts of unique error log levels and their messages
+    
+    Args:
+        logs: A list of logs from get_log_files
+        
+    Returns:
+        A dict of unique error counts and their messages
+    """
     errors = {}
     for filename, line in logs:
         result = parse_log(line, filename)
@@ -72,6 +123,13 @@ def count_errors(logs):
 
 
 def print_summary(counts):
+    """A printed summary of the log levels and their counts
+    
+    Args:
+        counts: A list of counts from counts_levels
+        
+    Returns:
+        None. Prints formatted key/value pairs to stdout."""
     for key, value in counts.items():
         print(f"{key}: {value}")
 
