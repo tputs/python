@@ -9,11 +9,9 @@ def is_prime(n):
     return True
 
 
-
 def main():
-    number = int(input('Enter a number: '))
+    number = int(input("Enter a number: "))
     print(is_prime(number))
-    
 
 
 if __name__ == "__main__":

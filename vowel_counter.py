@@ -7,9 +7,8 @@ def count_vowels(s):
     return counter
 
 
-
 def main():
-    word = input('Type a word: ')
+    word = input("Type a word: ")
     print(count_vowels(word))
 
 

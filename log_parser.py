@@ -2,19 +2,19 @@
 Log parser utility.
 Reads .log files, filters by time range, and summarizes log levels and unique errors.
 """
+
 from datetime import datetime
 from pathlib import Path
 import argparse
 import sys
 
 
-
 def get_log_files(directory):
     """Creates a list of log files from the given directory.
-    
+
     Args:
         directory: A directory path provided from argparse.
-    
+
     Returns:
         A globbed list of log files.
     """
@@ -30,26 +30,26 @@ def get_log_files(directory):
 
 def read_logs(filename):
     """File open handler to read given log files
-    
+
     Args:
         filename: Filenames of log files from given log directory
-    
+
     Returns:
         A list of log lines from the given log files
     """
-    with open(filename, 'r') as file:
+    with open(filename, "r") as file:
         content = file.readlines()
         return content
 
 
 def filter_by_time(all_logs, start, end):
     """Filters all logs down to given start and end date.
-    
+
     Args:
         all_logs: All log files found in the given directory.
         start: Start timestamp.
         end: End timestamp.
-        
+
     Returns:
         A list of (filename, line) tuples within the given time range.
     """
@@ -65,20 +65,22 @@ def filter_by_time(all_logs, start, end):
 
 def parse_log(line, filename=None):
     """Parse a single log line into its component parts.
-    
+
     Args:
         line: A string containing a log line.
         filename: Optional path to the source file, used in warnings.
-    
+
     Returns:
         A dict with Timestamp, Level, and Message keys, or None if parsing fails.
     """
     try:
         parts = line.split()
         log_line = {
-            "Timestamp": datetime.strptime(f"{parts[0]} {parts[1]}", "%Y-%m-%d %H:%M:%S"),
+            "Timestamp": datetime.strptime(
+                f"{parts[0]} {parts[1]}", "%Y-%m-%d %H:%M:%S"
+            ),
             "Level": parts[2],
-            "Message": " ".join(parts[3:])
+            "Message": " ".join(parts[3:]),
         }
         return log_line
     except (ValueError, IndexError):
@@ -88,10 +90,10 @@ def parse_log(line, filename=None):
 
 def count_levels(logs):
     """Dynamic counts of various log levels
-    
+
     Args:
         logs: A list of logs from get_log_files
-        
+
     Returns:
         A dict of counts of the various log levels found
     """
@@ -106,10 +108,10 @@ def count_levels(logs):
 
 def count_errors(logs):
     """Dynamic counts of unique error log levels and their messages
-    
+
     Args:
         logs: A list of logs from get_log_files
-        
+
     Returns:
         A dict of unique error counts and their messages
     """
@@ -125,10 +127,10 @@ def count_errors(logs):
 
 def print_summary(counts):
     """A printed summary of the log levels and their counts
-    
+
     Args:
         counts: A list of counts from counts_levels
-        
+
     Returns:
         None. Prints formatted key/value pairs to stdout.
     """
