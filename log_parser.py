@@ -130,7 +130,8 @@ def print_summary(counts):
         counts: A list of counts from counts_levels
         
     Returns:
-        None. Prints formatted key/value pairs to stdout."""
+        None. Prints formatted key/value pairs to stdout.
+    """
     for key, value in counts.items():
         print(f"{key}: {value}")
 
