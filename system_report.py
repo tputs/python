@@ -1,8 +1,10 @@
+import argparse
 import platform
+import json
 import os
 
 
-def get_info():
+def get_info() -> dict:
     """Gathers useful system information.
 
     Args:
@@ -33,7 +35,7 @@ def get_info():
     return info
 
 
-def print_info(info):
+def print_info(info: dict) -> None:
     """Prints system information.
 
     Args:
@@ -46,8 +48,14 @@ def print_info(info):
         print(f"{key}: {value}")
 
 
-def main():
-    print_info(get_info())
+def main() -> None:
+    parser = argparse.ArgumentParser(description="System report utility")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    if args.json:
+        print(json.dumps(get_info(), indent=2))
+    else:
+        print_info(get_info())
 
 
 if __name__ == "__main__":
