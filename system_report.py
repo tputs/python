@@ -4,10 +4,10 @@ import os
 
 def get_info():
     """Gathers useful system information.
-    
+
     Args:
         None.
-        
+
     Returns:
         A dict with gathered system information.
     """
@@ -28,17 +28,17 @@ def get_info():
         "Path": os.getenv("PATH", "Not set"),
         "Shell": os.getenv("SHELL", "Not set"),
         "AWS Profile": os.getenv("AWS_PROFILE", "Not set"),
-        "AWS Region": os.getenv("AWS_REGION", "Not set")
+        "AWS Region": os.getenv("AWS_REGION", "Not set"),
     }
     return info
 
 
 def print_info(info):
     """Prints system information.
-    
+
     Args:
         info: System information gathered by get_info
-    
+
     Returns:
         None. Prints information gathered to stdout.
     """
