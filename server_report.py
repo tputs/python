@@ -1,7 +1,15 @@
 import csv
 
 
-def get_servers():
+def get_servers() -> int:
+    """Reads from csv file, counts, and prints unhealthy server info to stdout
+
+    Args:
+        None.
+
+    Returns:
+        Count of unheahlthy servers
+    """
     with open("servers.csv", "r") as f:
         reader = csv.DictReader(f)
         count = 0
@@ -14,7 +22,15 @@ def get_servers():
         return count
 
 
-def print_report(count):
+def print_report(count: int) -> None:
+    """Prints count of unhealthy servers
+
+    Args:
+        count: Count of unhealthy servers from get_servers
+
+    Returns:
+        None.
+    """
     print(f"Total unhealthy servers: {count}")
 
 
