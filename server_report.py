@@ -1,3 +1,4 @@
+from server import Server
 import csv
 
 
@@ -14,10 +15,11 @@ def get_servers() -> int:
         reader = csv.DictReader(f)
         count = 0
         for row in reader:
-            if row["status"] == "unhealthy":
-                print(
-                    f"UNHEALTHY: {row["hostname"]} ({row["ip"]}) - {row["environment"]}"
-                )
+            server = Server(
+                row["hostname"], row["ip"], row["environment"], row["status"]
+            )
+            if not server.is_healthy():
+                print(server.summary())
                 count += 1
         return count
 
