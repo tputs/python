@@ -1,5 +1,6 @@
-from log_parser.reports import count_errors, count_levels, print_summary
+from log_parser.reports import count_errors, count_levels, print_summary, print_spikes
 from log_parser.parser import read_logs, get_log_files
+from log_parser.anomaly import detect_error_spikes
 from log_parser.filters import filter_by_time
 from datetime import datetime
 import argparse
@@ -33,6 +34,7 @@ def main():
     print_summary(counts)
     print("--- Unique Errors ---")
     print_summary(count_errors(filteredlog))
+    print_spikes(detect_error_spikes(all_logs))
 
 
 if __name__ == "__main__":

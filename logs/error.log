@@ -2,4 +2,8 @@
 2024-01-15 08:23:45 INFO Service started successfully
 2024-01-15 08:24:02 WARNING High memory usage detected
 2024-01-15 08:25:13 ERROR Timeout on request to payment service
+2024-01-15 08:25:23 ERROR Timeout on request to payment service
+2024-01-15 08:25:33 ERROR Timeout on request to payment service
+2024-01-15 08:25:43 ERROR Timeout on request to payment service
+2024-01-15 08:25:53 ERROR Timeout on request to payment service
 2024-01-15 08:26:01 DEBUG Connection pool initialized

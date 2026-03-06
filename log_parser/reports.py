@@ -49,3 +49,9 @@ def print_summary(counts):
     """
     for key, value in counts.items():
         print(f"{key}: {value}")
+
+
+def print_spikes(spikes: dict) -> None:
+    print("--- Anomaly Detection ---")
+    for bucket, count in spikes.items():
+        print(f"Spike detected at {bucket} - {count} errors in 5 minute window")
