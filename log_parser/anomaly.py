@@ -23,7 +23,7 @@ def detect_error_spikes(logs, threshold: int = 5) -> dict:
         threshold: Error count threshold, default 5
 
     Returns:
-        A dict of logs in a bucket with a count of errors"""
+        A dict of log errors with a count"""
     buckets = {}
     over_threshold = {}
     for filename, line in logs:
