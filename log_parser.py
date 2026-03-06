@@ -42,27 +42,6 @@ def read_logs(filename):
         return content
 
 
-def filter_by_time(all_logs, start, end):
-    """Filters all logs down to given start and end date.
-
-    Args:
-        all_logs: All log files found in the given directory.
-        start: Start timestamp.
-        end: End timestamp.
-
-    Returns:
-        A list of (filename, line) tuples within the given time range.
-    """
-    filtered = []
-    for filename, line in all_logs:
-        result = parse_log(line, filename)
-        if result is None:
-            continue
-        if result["Timestamp"] >= start and result["Timestamp"] <= end:
-            filtered.append((filename, line))
-    return filtered
-
-
 def parse_log(line, filename=None):
     """Parse a single log line into its component parts.
 
@@ -86,6 +65,27 @@ def parse_log(line, filename=None):
     except (ValueError, IndexError):
         print(f"Warning: Could not parse line in {filename}: {line.strip()}")
         return None
+
+
+def filter_by_time(all_logs, start, end):
+    """Filters all logs down to given start and end date.
+
+    Args:
+        all_logs: All log files found in the given directory.
+        start: Start timestamp.
+        end: End timestamp.
+
+    Returns:
+        A list of (filename, line) tuples within the given time range.
+    """
+    filtered = []
+    for filename, line in all_logs:
+        result = parse_log(line, filename)
+        if result is None:
+            continue
+        if result["Timestamp"] >= start and result["Timestamp"] <= end:
+            filtered.append((filename, line))
+    return filtered
 
 
 def count_levels(logs):
