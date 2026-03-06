@@ -47,6 +47,10 @@ class Server:
     def __repr__(self) -> str:
         return f"Server(hostname={self.hostname!r}, ip={self.ip!r}, environment={self.environment!r}, status={self.status!r})"
 
+    @property
+    def display_status(self) -> str:
+        return self.status.upper()
+
 
 class WebServer(Server):
     def __init__(
