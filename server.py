@@ -41,6 +41,12 @@ class Server:
             Server Hostname, IP, Environment, Status"""
         return f"Server Hostname: {self.hostname} IP: {self.ip} Environment: {self.environment} Status: {self.status}"
 
+    def __str__(self) -> str:
+        return self.summary()
+
+    def __repr__(self) -> str:
+        return f"Server(hostname={self.hostname!r}, ip={self.ip!r}, environment={self.environment!r}, status={self.status!r})"
+
 
 class WebServer(Server):
     def __init__(
