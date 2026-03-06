@@ -1,4 +1,6 @@
 class Server:
+    valid_statuses = ["healthy", "unhealthy", "degraded"]
+
     def __init__(self, hostname: str, ip: str, environment: str, status: str) -> None:
         """Instantiates a server object
 
@@ -14,6 +16,10 @@ class Server:
         self.ip = ip
         self.environment = environment
         self.status = status
+        if status not in Server.valid_statuses:
+            raise ValueError(
+                f"Invalid status: {status}. Must be one of {Server.valid_statuses}"
+            )
 
     def is_healthy(self) -> bool:
         """Returns server status if healthy
@@ -51,7 +57,7 @@ class WebServer(Server):
 
         Returns:
             Server Hostname, IP, Port, Environment, Status"""
-        return f"Server Hostname: {self.hostname} IP: {self.ip} Server Port: {self.port} Environment: {self.environment} Status: {self.status}"
+        return f"Server Hostname: {self.hostname} IP: {self.ip}:{self.port} Environment: {self.environment} Status: {self.status}"
 
 
 if __name__ == "__main__":
